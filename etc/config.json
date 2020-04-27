@@ -1,0 +1,26 @@
+{
+  "sync": {
+    "syncFolders" : [
+      { 
+        "source": "/home/richard/Downloads",
+        "destination": "/home/richard/raptor",  
+        "fileType": "jpg",
+        "cronSchedule": "*/5 * * * * *"
+      }
+    ]
+  },
+  "logging": { 
+    "console": {
+      "level": "info"
+     
+    },
+    "file": {
+      "level": "info",
+      "path": "/var/log/raptor/raptorlog"
+    }
+  },
+  "silentMode": false,
+  "debugMode": false,
+  "force": false,
+  "historyFile": "/var/raptor"
+}

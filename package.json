@@ -1,0 +1,72 @@
+{
+  "name": "raptor",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "bin": "./bin/raptor.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardregeer/raptor.git"
+  },
+  "author": "Richard Regeer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/richardregeer/raptor/issues"
+  },
+  "homepage": "https://github.com/richardregeer/raptor#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^5.0.0",
+    "cron": "^1.8.2",
+    "hasha": "^5.2.0",
+    "shelljs": "^0.8.3",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "ava": "^2.4.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nyc": "^15.0.0",
+    "sinon": "^7.4.1"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "tests/**",
+      "src/main.js"
+    ],
+    "check-coverage": true,
+    "branches": 85,
+    "lines": 85,
+    "functions": 85,
+    "statements": 85,
+    "watermarks": {
+      "lines": [
+        70,
+        85
+      ],
+      "functions": [
+        70,
+        85
+      ],
+      "branches": [
+        70,
+        85
+      ],
+      "statements": [
+        70,
+        85
+      ]
+    }
+  }
+}
