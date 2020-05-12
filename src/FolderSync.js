@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const chalk = require('chalk');
 
 class FolderSync {
   constructor(fileHistoryRepository, directoryFileScanner, fileHandler, logger, schedular) {
@@ -12,21 +13,25 @@ class FolderSync {
     this._files = [];
   }
 
-  syncFolder(fullSource, fullDestination, fileType, cronSchedule, force) {
-    if (cronSchedule) {
+  syncFolder(fullSource, fullDestination, fileType, cronSchedule, deleteSource, force, dryRun) {
+    if (cronSchedule && !dryRun) {
       this._logger.debug(`Cron schedule ${cronSchedule} found`);
 
       this._schedular.startJob(cronSchedule, () => {
-        this._syncFolderTask(fullSource, fullDestination, fileType, force);
+        this._syncFolderTask(fullSource, fullDestination, fileType, deleteSource, force, dryRun);
       });
 
       return;
     }
 
-    this._syncFolderTask(fullSource, fullDestination, fileType, force);
+    if (dryRun) {
+      this._logger.info(chalk.yellow('Dry-run started'));
+    }
+
+    this._syncFolderTask(fullSource, fullDestination, fileType, deleteSource, force, dryRun);
   }
 
-  _syncFolderTask(fullSource, fullDestination, fileType, force) {
+  _syncFolderTask(fullSource, fullDestination, fileType, deleteSource, force, dryRun) {
     this._logger.debug('Started folder sync');
 
     const files = this._directoryFileScanner.scan(fullSource, fileType);
@@ -39,9 +44,16 @@ class FolderSync {
 
         this._logger.info(`Sync ${file} to ${fullDestination}/${fileName}`);
 
-        this._fileHandler.copyFileSync(file, `${fullDestination}/${fileName}`);
-        this._fileHistoryRepository.add(file);
-        filesAdded++;
+        if (!dryRun) {
+          this._fileHandler.copyFileSync(file, `${fullDestination}/${fileName}`);
+          this._fileHistoryRepository.add(file);
+          filesAdded++;
+
+          if (deleteSource) {
+            this._logger.info(`Deleted source ${file}`);
+            this._fileHandler.deleteFileSync(file);
+          }
+        }
       }
     });
 
@@ -49,7 +61,7 @@ class FolderSync {
       this._fileHistoryRepository.store();
     }
 
-    this._logger.debug('Finished folder sync');
+    this._logger.debug(chalk.green('Finished folder sync'));
   }
 }
 

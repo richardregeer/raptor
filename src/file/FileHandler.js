@@ -47,6 +47,16 @@ class FileHandler {
 
     fs.writeFileSync(fullFileName, contents);
   }
+
+  deleteFileSync(fullFileName) {
+    const fileName = path.basename(fullFileName);
+
+    if (!fs.existsSync(fullFileName)) {
+      throw new Error(`File ${fileName} does not exsists`);
+    }
+
+    fs.unlinkSync(fullFileName);
+  }
 }
 
 module.exports = FileHandler;

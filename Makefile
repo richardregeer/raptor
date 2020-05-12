@@ -10,6 +10,8 @@ ENV := development
 DOCKER := true
 PROJECT_ROOT := $(shell pwd)
 NODE_MODULES := ./node_modules/.bin
+DOCKER_IMAGE := richardregeer/google-drive-sync
+VERSION := $(shell cat VERSION)
 
 ifeq ($(DOCKER),true)
 	START_COMMAND := docker run --rm -it -v ${PROJECT_ROOT}:/development raptor:development 
@@ -50,6 +52,24 @@ else
 	@echo -e '${CYAN}Build Raptor development docker image: raptor:development${DEFAULT}'
 	docker build -t raptor:development docker/development
 endif
+
+.PHONY: build
+build: ## Build the google drive sync image.
+	docker build \
+		-t ${DOCKER_IMAGE}:development \
+		-t ${DOCKER_IMAGE}:ci \
+		-t ${DOCKER_IMAGE}:production \
+		-t ${DOCKER_IMAGE}:${VERSION} \
+		-t ${DOCKER_IMAGE}:latest .
+
+.PHONY: publish
+publish: ## Pubish docker image to docker hub only available on ci environment.
+ifneq ($(ENV),ci)
+	$(error Required ENV='ci')
+endif
+	docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+	docker push ${DOCKER_IMAGE}:${VERSION}
+	docker push ${DOCKER_IMAGE}:latest
 	
 .PHONY: lint
 lint: ## Check the codestyle of the complete project.

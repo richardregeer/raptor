@@ -19,9 +19,9 @@ module.exports = {
     'arrow-body-style': 0,
     'class-methods-use-this': 0,
     'comma-dangle': [2, 'never'],
-    'complexity': [2, 11],
+    'complexity': [2, 15],
     'import/no-extraneous-dependencies': [2, { devDependencies: true }],
-    'max-statements': [2, 20],
+    'max-statements': [2, 25],
     'no-plusplus': 0,
     'no-restricted-syntax': [
       2,

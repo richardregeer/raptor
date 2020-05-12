@@ -12,11 +12,10 @@
   "logging": { 
     "console": {
       "level": "info"
-     
     },
     "file": {
       "level": "info",
-      "path": "/var/log/raptor/raptorlog"
+      "path": "/tmp/log/raptor/raptorlog"
     }
   },
   "silentMode": false,

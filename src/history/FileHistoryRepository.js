@@ -10,9 +10,11 @@ class FileHistoryRepository {
     this._files = [];
   }
 
-  exists(fileName) {
-    const fileHash = this._fileHasher.hashFileSync(fileName);
+  createHashFromFilename(fileName) {
+    return this._fileHasher.hashFileSync(fileName);
+  }
 
+  exists(fileHash) {
     if (this._files.length === 0) {
       this._initialize();
     }
@@ -24,9 +26,9 @@ class FileHistoryRepository {
   }
 
   add(fileName, autoStore = false) {
-    const fileHash = this._fileHasher.hashFileSync(fileName);
+    const fileHash = this.createHashFromFilename(fileName);
 
-    if (!this.exists(fileName)) {
+    if (!this.exists(fileHash)) {
       this._files.push(fileHash);
       this._logger.debug(`New file hash ${fileHash} added to store`);
     }

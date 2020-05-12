@@ -1,1 +1,1 @@
-FROM richardregeer/web-development:node-12
+FROM node:12
