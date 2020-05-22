@@ -9,6 +9,9 @@
   "engines": {
     "node": ">=12"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": "./bin/raptor.js",
   "repository": {
     "type": "git",

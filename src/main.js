@@ -13,6 +13,7 @@ const LoggerFactory = require('./logging/LoggerFactory');
 const FileHistoryRepository = require('./history/FileHistoryRepository');
 const CLIConfigurationParser = require('./config/CLIConfigurationParser');
 const FileConfigurationParser = require('./config/FileConfigurationParser');
+const Configuration = require('./config/Configuration');
 
 const Schedular = require('./cron/Schedular');
 
@@ -48,7 +49,7 @@ function run(options) {
   const fileHandler = new FileHandler();
   const fileConfigParser = new FileConfigurationParser(fileHandler);
   const cliConfigParser = new CLIConfigurationParser(fileHandler);
-  let config = {};
+  let config = new Configuration();
 
   if (options.configFile) {
     config = fileConfigParser.parse(options);
