@@ -1,18 +1,18 @@
 {
-  "name": "raptor",
-  "version": "1.0.0",
+  "name": "raptor-sync",
+  "version": "1.0.3",
   "description": "",
   "directories": {
     "doc": "docs",
     "lib": "lib"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=10"
   },
   "publishConfig": {
     "access": "public"
   },
-  "bin": "./bin/raptor.js",
+  "bin": "./bin/raptor",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/richardregeer/raptor.git"

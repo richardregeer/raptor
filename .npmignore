@@ -1,0 +1,7 @@
+docker
+config.dev.json
+.editorconfig
+.gitignore
+.travis.yml
+Makefile
+.eslintrc.js
