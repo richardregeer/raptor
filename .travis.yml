@@ -18,3 +18,4 @@ deploy:
   script: cp .npmrc.template $HOME/.npmrc && npm publish
   on:
     tags: true
+    condition: ${TRAVIS_NODE_VERSION} = 12

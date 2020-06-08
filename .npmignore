@@ -5,3 +5,4 @@ config.dev.json
 .travis.yml
 Makefile
 .eslintrc.js
+.npmrc.template
