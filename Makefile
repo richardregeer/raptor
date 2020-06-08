@@ -43,40 +43,20 @@ ifeq ($(ENV),ci)
 	npm install
 endif
 
-.PHONY: docker_build
-docker_build: ## Build Raptor docker image. Possible environments ENV=development
-ifeq ($(ENV),production)
-	@echo -e '${CYAN}Build Raptor development docker image: raptor:development${DEFAULT}'
-	docker build -t raptor:development docker/development
-else
-	@echo -e '${CYAN}Build Raptor development docker image: raptor:development${DEFAULT}'
-	docker build -t raptor:development docker/development
-endif
-
-.PHONY: build
-build: ## Build the google drive sync image.
-	docker build \
-		-t ${DOCKER_IMAGE}:development \
-		-t ${DOCKER_IMAGE}:ci \
-		-t ${DOCKER_IMAGE}:production \
-		-t ${DOCKER_IMAGE}:${VERSION} \
-		-t ${DOCKER_IMAGE}:latest .
-
 .PHONY: publish
-publish: ## Pubish docker image to docker hub only available on ci environment.
+publish: ## Pubish to npm only available on ci environment.
 ifneq ($(ENV),ci)
 	$(error Required ENV='ci')
 endif
-	docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
-	docker push ${DOCKER_IMAGE}:${VERSION}
-	docker push ${DOCKER_IMAGE}:latest
+	cp .npmrc.template $HOME/.npmrc
+	npm publish
 	
 .PHONY: lint
 lint: ## Check the codestyle of the complete project.
 	${START_COMMAND} ${NODE_MODULES}/eslint .
 
 .PHONY: test
-test: test_unit test_integration## Run all the tests of the complete project.
+test: test_unit test_integration ## Run all the tests of the complete project.
 
 # .PHONY: test_unit
 # test_unit: ## Run all the unit tests of the complete project.
