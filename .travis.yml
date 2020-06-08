@@ -3,7 +3,6 @@ language: node_js
 env:
   global:
     - ENV=ci
-    - DOCKER=false
 
 node_js:
 - '10'
@@ -11,16 +10,16 @@ node_js:
 - '14'
 
 before_script:
-- make install
+- make install ENV=ci
 
 script:
-- make lint
+- make lint DOCKER=false
 
 deploy:
   provider: script
   skip_cleanup: true
   cleanup: true
-  script: make publish
+  script: make publish ENV=ci
   on:
     tags: true
     condition: ${TRAVIS_NODE_VERSION} = 12
