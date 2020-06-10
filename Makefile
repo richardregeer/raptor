@@ -10,8 +10,6 @@ ENV := development
 DOCKER := true
 PROJECT_ROOT := $(shell pwd)
 NODE_MODULES := ./node_modules/.bin
-DOCKER_IMAGE := richardregeer/google-drive-sync
-VERSION := $(shell cat VERSION)
 
 ifeq ($(DOCKER),true)
 	START_COMMAND := docker run --rm -it -v ${PROJECT_ROOT}:/development raptor:development 
@@ -35,7 +33,7 @@ help:
 install: ## Install Raptor for a specific environment setup. Possible environments ENV=development|ci
 ifeq ($(ENV),development)
 	@echo -e '${CYAN}Install Raptor for the development environment${DEFAULT}'
-	make docker_build ENV=development
+	docker build -t raptor:development docker/development
 	${START_COMMAND} npm install
 endif
 ifeq ($(ENV),ci)
@@ -55,8 +53,8 @@ endif
 lint: ## Check the codestyle of the complete project.
 	${START_COMMAND} ${NODE_MODULES}/eslint .
 
-.PHONY: test
-test: test_unit test_integration ## Run all the tests of the complete project.
+# .PHONY: test
+# test: test_unit test_integration ## Run all the tests of the complete project.
 
 # .PHONY: test_unit
 # test_unit: ## Run all the unit tests of the complete project.
