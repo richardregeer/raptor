@@ -12,7 +12,7 @@ PROJECT_ROOT := $(shell pwd)
 NODE_MODULES := ./node_modules/.bin
 
 ifeq ($(DOCKER),true)
-	START_COMMAND := docker run --rm -it -v ${PROJECT_ROOT}:/development raptor:development 
+	START_COMMAND := docker run --rm -it -v ${PROJECT_ROOT}:/development richardregeer/raptor:development 
 else 
 	START_COMMAND := 
 endif
@@ -33,7 +33,7 @@ help:
 install: ## Install Raptor for a specific environment setup. Possible environments ENV=development|ci
 ifeq ($(ENV),development)
 	@echo -e '${CYAN}Install Raptor for the development environment${DEFAULT}'
-	docker build -t raptor:development docker/development
+	docker build -t richardregeer/raptor:development docker/development
 	${START_COMMAND} npm install
 endif
 ifeq ($(ENV),ci)
@@ -41,14 +41,22 @@ ifeq ($(ENV),ci)
 	npm install
 endif
 
+.PHONY: start
+start: ## Start raptor. Possible environments ENV=development. Use ARGS=<arguments> to pass any arguments
+ifeq ($(ENV),development)
+	@echo -e '${CYAN}Start Raptor in development environment. Make sure to run make install first.${DEFAULT}'
+	${START_COMMAND} bin/raptor -i /development $(ARGS)
+endif
+
 .PHONY: publish
-publish: ## Pubish to npm only available on ci environment.
+publish: ## Pubish to npm and docker hub only available on ci environment.
 ifneq ($(ENV),ci)
 	$(error Required ENV='ci')
 endif
 	cp .npmrc.template $HOME/.npmrc
 	npm publish
-	
+	scripts/publish_docker
+
 .PHONY: lint
 lint: ## Check the codestyle of the complete project.
 	${START_COMMAND} ${NODE_MODULES}/eslint .

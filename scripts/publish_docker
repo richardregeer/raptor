@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+IMAGE=richardregeer/raptor
+VERSION=$(node -p "require('./package.json').version")
+    
+docker build -t "$IMAGE" -t "$IMAGE:$VERSION" -t "$IMAGE:latest" docker/production
+docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+docker push "$IMAGE"
+docker push "$IMAGE:$VERSION"
+docker push "$IMAGE:latest"

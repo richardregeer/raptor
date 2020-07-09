@@ -4,6 +4,8 @@ env:
   global:
     - ENV=ci
 
+services: docker
+
 node_js:
 - '10'
 - '12'
