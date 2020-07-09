@@ -53,7 +53,7 @@ publish: ## Pubish to npm and docker hub only available on ci environment.
 ifneq ($(ENV),ci)
 	$(error Required ENV='ci')
 endif
-	cp .npmrc.template $HOME/.npmrc
+	cp .npmrc.template ${HOME}/.npmrc
 	npm publish
 	scripts/publish_docker
 
